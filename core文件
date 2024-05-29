@@ -18,6 +18,7 @@ vim /etc/profile
 source /etc/profile
 
 验证是否生效：
+重新开一个终端，bash一下执行以下命令，看会不会产生core文件
 kill -s SIGSEGV $$
 
 
