@@ -29,5 +29,12 @@ sudo vim /etc/ld.so.conf
 sudo ldconfig
 
 
+# grep查找文件的特定内容(显示行号和文件名) 
+grep -rn "example" .
+
+
+
+
+
 
 
