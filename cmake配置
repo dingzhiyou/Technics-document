@@ -1,0 +1,13 @@
+添加变量 -DCMAKE_BUILD_TYPE=.......
+CMAKE_SOURCE_DIR 为cmakelists.txt文件路径
+CMKAE_BINARY_DIR为执行cmake ..的路径
+
+
+find_library(Var libxx.a/libxx.so PATHS    ) #如果要去除在默认路径查找可以在后面使用NO_DEFULT_PATH变量
+#如果找到那么可以这样打印变量对不对，会打印出路径的
+if(Var)
+      message()
+elseif()
+      message()
+endif()
+
