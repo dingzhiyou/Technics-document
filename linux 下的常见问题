@@ -1,0 +1,33 @@
+# PATH环境变量的修改,单用户有效--------针对的是二进制文件
+vi ~/.profile
+export PATH=/opt/myprogram/bin:$PATH
+source ~/.profile
+
+#PATH环境变量的修改，单shell有效
+export PATH=/opt/myprogram/bin:$PATH
+
+#PATH环境变量的修改，所有用户有效
+sudo vi /etc/profile
+export PATH=/opt/myprogram/bin:$PATH
+source /etc/profile
+
+#三方库路径添加--------针对的是链接库的时候
+#单shell有效
+export LD_LIBRARY_PATH=/path/to/your/library:$LD_LIBRARY_PATH
+sudo ldconfig
+
+#单用户有效
+vi ~/.bashrc
+export LD_LIBRARY_PATH=/path/to/your/library:$LD_LIBRARY_PATH
+source ~/.bashrc
+sudo ldconfig
+
+#所有用户有效
+sudo vim /etc/ld.so.conf
+在文件添加新路径
+/path/to/your/library
+sudo ldconfig
+
+
+
+
