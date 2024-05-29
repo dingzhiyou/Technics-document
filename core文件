@@ -1,0 +1,26 @@
+core文件产生：
+********************************
+直接生效：
+echo /home/bigmath/corefile/core-%E-%p-%t-%s > /proc/sys/kernel/core_pattern
+echo "1" > /proc/sys/kernel/core_uses_pid
+ulimit -c unlimited
+
+永久生效：
+1. 
+vim /etc/sysctl.conf
+  kernel.core_pattern = /home/bigmath/corefile/core-%E-%p-%t-%s
+  kernel.core_uses_pid = 1
+sysctl -p /etc/sysctl.conf
+
+2.
+vim /etc/profile
+   ulimit -c unlimited
+source /etc/profile
+
+验证是否生效：
+kill -s SIGSEGV $$
+
+
+
+关闭core文件产生：
+ulimit -c 0
