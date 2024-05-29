@@ -32,6 +32,10 @@ sudo ldconfig
 # grep查找文件的特定内容(显示行号和文件名) 
 grep -rn "example" .
 
+# 默认一个终端死掉后会通过发送SIGHUG信号发送给所有的在该终端执行的进程，即使是后台执行的进程 &,通过nohug命令可以消除这一点
+nohug ./executable & 
+
+
 
 
 
