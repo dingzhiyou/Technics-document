@@ -11,4 +11,7 @@ gcc main.cc -o -L库路径 -l库名（掐头去尾）.... -L库路径 -l库名�
 
 # 可执行文件运行时，不使用系统的LD_LIBRARY_PATH去寻找库,而使用自己设置的RPATH来查找
 https://bewaremypower.github.io//2020/07/14/%E9%93%BE%E6%8E%A5%E9%80%89%E9%A1%B9-rpath-%E7%9A%84%E5%BA%94%E7%94%A8%E5%92%8C%E5%8E%9F%E7%90%86/
-
+# 实际CMake设置如下，ORIGIN为文件执行目录，可以通过ldd来判断是否正确链接
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH $ORIGIN/../third-party/lib/pqxx/)   # 多路径通过:进行分割
