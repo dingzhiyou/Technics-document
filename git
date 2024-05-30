@@ -41,5 +41,7 @@ hint: to the same ref. You may want to first integrate the remote changes
 hint: (e.g., 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details
 
+# 切记添加config的时候不能使用https://添加路径，不然会走https协议，
+
 # 验证key是否添加成功
 ssh -T git@github.com
