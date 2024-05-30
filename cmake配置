@@ -17,3 +17,7 @@ include_directories()
 
 # cmake包含库路径
 link_directories()
+
+
+# 这条命令可以在执行make指令时看到具体的详细命令过程
+cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON
