@@ -50,6 +50,41 @@ operator bool() const {
         return isNonEmpty;
 }
 
+
+#通常C++要求为所有的任何东西提供定义，但类专用的静态整数类型（例如int，char，bool）常量是个例外，只要不获取他们的地址，就可以在不提供定义的情况下声明并使用他们
+所以类常量的初始值是在声明时指定的，在定义时不允许对其进行赋值
+class A  {
+public:
+private:
+    static const int s_size = 10;//这属于声明定义一起
+    int array[s_size];//此时已经需要拿到s_size的数值了,此时不要赋值
+    static vector<int> s_v;//对于静态成员来说这属于声明
+};
+const int A::s_size;//定义------------总的来说类内声明类外实现是没问题的，但是如果你在类内就要使用到这个变量，你就需要在类内进行实现，比如像这里
+vector<int> A::s_v;//这个属于定义，在s_v是静态成员的情况下
+
+
+#const在*左边或者右边的情况
+const char* p = "aaaaaa";//指的是不能通过p来修改“aaaaaa”的值，但是p是可以指向其他的地方的const char* p与 char const* p中是一致的
+char* greet[]="hello";
+char* const p = greet;//是指p不能指向别的值，但是可以通过p来修改"hello"的值,注意char* const p = "hello"0是错误的，不允许，原因是"hello"他就是const char*类型的;
+
+const std::vector<int>::interator iter =vec.begin();
+*iter = 10; //OK
+iter++;//false
+
+std::vector<int>::const_interator iter =vec.begin();
+*iter = 10; //OFF
+iter++;//OK
+
+#既然进行了整个函数的const修饰，就意味着我们不打算修改值了，所以返回你也必须返回const，否则，会报错
+const char& operator[](std::size_t position) const {
+  return text[position];
+}
+ char& operator[](std::size_t position)  {
+  return text[position];
+}
+
 #operator重载到底要不要添加const ？
 
 
