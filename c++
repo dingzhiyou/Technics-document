@@ -44,4 +44,13 @@ int main() {
     return 0;
 }
 
+#父子类之间的智能指针转换函数 std::dynamic_pointer_cast<Derived>(basePtr);会进行检测，如果转换成功那么返回值可用
+#重载bool，方便使用
+operator bool() const {
+        return isNonEmpty;
+}
+
+#operator重载到底要不要添加const ？
+
+
 
