@@ -25,3 +25,6 @@ kill -s SIGSEGV $$
 
 关闭core文件产生：
 ulimit -c 0
+
+
+程序发生段错误segment fault不一定会产生core文件，因为系统可能让core文件产生大小为0(此时只会显示segment fault而不会显示core dump)，只有允许core文件产生，发生段错误时才会显示core dump此时会产生core文件
