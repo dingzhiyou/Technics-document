@@ -155,6 +155,15 @@ void process(T&& arg) //万能模版，既能接受左值，也能接受右值�
   func(std::forward<T>(arg));
 }
 
+# typename与class的区别
+在定义template<>的时候没有任何区别，但是在定义依赖从属名称时有较大的区别，在这里我们必须搞明白两个概念，从属名称，依赖从属名称，下面的例子中C就是从属名称，而C::const_iterator就是
+依赖从属名称
+template<classT>
+void func(const T& C ) {
+  C::const_iterator * x;//这里有含糊不清的地方，也就是C::const_iterator到底是一个类型还是一个哦成员（比如静态成员），如果是类型，那么这就是在定义一个该类型的指针，否则就是在做一个乘法
+}
+在C::const_iterator前面加上typename就可以让编译器知道他就是一个类型 typename C::const_iterator * x,通常在模板中使用::是需要注意这一点
+
 
 
 
