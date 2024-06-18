@@ -1,0 +1,43 @@
+
+# std::atomic_flag 类型
+std::atomic_flag flag = ATOMIC_FLAG_INIT;//初始化相当于置零操作，含以上此时为0
+flag.test_and_set(std::memory_order_acquire);如果原来变量是0，那么相当于将其置为1并且返回false，如果他开始不是0，此时就会返回true
+flag.clear(std::memory_order_release)，相当于又将其置0
+
+class SpinLock {
+public:
+  void lock() {
+    while(flag.test_and_set(std::memory_order_acquire));
+  }
+  void unlock() {
+    flag.clear(std::memory_order_release);
+  }  
+private:
+std::atomic_flag flag = ATOMIC_FLAG_INIT;/
+};
+
+# 内存序问题
+memory_order_releaxed 是宽松的内存序，他只保证操作原子性，不保证多个变量的顺序性，也不能保证同一变量在不同线程之间的可见顺序（其他线程可能不知道某个变量进行了修改）
+memort_order_seq_cst 全局顺序一致性内存序，以这种方式存取能保证线程拿到的数据永远是最新的（开销较大）
+//一般主要用这三条
+memory_order_acquire 对原子变量进行load时使用
+memory_order_release 对原子操作的store时使用，这里的release是发行发布的意思，也就是我们修改后要进行发布出去
+memory_order_acq_rel 就是前面两者的结合，读-改-写
+
+std::atomic<T>::compare_exchange_strong(T& expected,T& desire) //如何本atomic里面的值和expected值相等，那么返回true，并且将desire的值赋值给m_val，如果不相等，则返回false并且将m_val的值赋值给expected
+
+实现无锁队列的:
+std::atomic<bool> is_using{false} //开始未被线程占用
+加锁 
+do{
+  use_expected = false;
+  use_desire = true;
+}while(!is_using.compare_exchange_strong(use_expected,use_desire));
+
+解锁
+do{
+  use_expected = true;
+  use_desire = false;
+}while(!is_using.compare_exchange_strong(use_expected,use_desire));
+
+
