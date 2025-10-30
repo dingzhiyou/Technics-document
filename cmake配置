@@ -1,9 +1,13 @@
 添加变量 -DCMAKE_BUILD_TYPE=.......
-CMAKE_SOURCE_DIR 为cmakelists.txt文件路径
+CMAKE_SOURCE_DIR 为最外层cmakelists.txt文件路径，CMAKE_CURRENT_SOURCE_DIR为当前CmakeList.txt的路径
 CMKAE_BINARY_DIR为执行cmake ..的路径
 
+find_package(lib Options) 查找已经通过 CMake 配置的完整库包，会自动设置库文件，头文件，如find_package(Boost REQUIRED) 找到后会自动设置Boost_INCLUDE_DIRS和Boost_LIB变量
+find_library(Var libxx.a/libxx.so PATHS    ) #如果要去除在默认路径查找可以在后面使用NO_DEFULT_PATH变量，只会查找库而已
 
-find_library(Var libxx.a/libxx.so PATHS    ) #如果要去除在默认路径查找可以在后面使用NO_DEFULT_PATH变量
+add_dependencies（targetname,libraries）这里只是指定构建顺序先要构建libraries，才能去构建targetname
+target_link_libraries(${targetname} ${libs})才是真正去链接库
+
 #如果找到那么可以这样打印变量对不对，会打印出路径的
 if(Var)
       message()
@@ -21,3 +25,6 @@ link_directories()
 
 # 这条命令可以在执行make指令时看到具体的详细命令过程
 cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON
+
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)  设置cmake模块的查找路径，在原有的情况下进行添加路径
