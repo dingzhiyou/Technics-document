@@ -36,6 +36,8 @@ grep -rn "example" .
 nohug ./executable & 
 
 
+linux下的clash配置   https://blog.iswiftai.com/posts/clash-linux/
+
 
 
 
