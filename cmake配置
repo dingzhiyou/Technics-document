@@ -29,3 +29,16 @@ cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)  设置cmake模块的查找路径，在原有的情况下进行添加路径
+
+CMAKE_RUNTIME_OUTPUT_DIRECTORY是可执行文件输出路径（默认为空），CMAKE_ARCHIVE_OUTPUT_DIRECTORY静态库输出路径，CMAKE_LIBRARY_OUTPUT_DIRECTORY动态库输出路径
+
+SOURCE对应的是源目录，BINARY对应的是构建目录
+CMAKE_SOURCE_DIR	源代码根目录（包含最顶层 CMakeLists.txt 的目录）	/home/user/my_project
+CMAKE_BINARY_DIR	构建目录根目录（运行 cmake 的目录）	/home/user/my_project/build
+CMAKE_CURRENT_SOURCE_DIR	当前处理的 CMakeLists.txt 所在目录	/home/user/my_project/src
+CMAKE_CURRENT_BINARY_DIR	当前 CMakeLists.txt 对应的构建目录	/home/user/my_project/build/src
+
+
+
+
+
