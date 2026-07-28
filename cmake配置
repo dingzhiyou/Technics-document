@@ -7,6 +7,7 @@ find_library(Var libxx.a/libxx.so PATHS    ) #如果要去除在默认路径查�
 
 add_dependencies（targetname,libraries）这里只是指定构建顺序先要构建libraries，才能去构建targetname
 target_link_libraries(${targetname} ${libs})才是真正去链接库
+target_link_libraries(my_app PRIVATE A)，PRIVATE是.cpp中包含了上一级的.h文件，适合不暴露内部变量的方式，PUBLIC是包含.h文件，需要暴露外部变量的方式
 
 #如果找到那么可以这样打印变量对不对，会打印出路径的
 if(Var)
