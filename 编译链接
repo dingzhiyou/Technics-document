@@ -7,7 +7,19 @@ g++ -c b.cpp -o b.o    # 2. 编译 B（只需要 c.h），这个阶段特别重�
 ar rcs libC.a c.o      # 3. 把 c.o 打包成 libC.a
 
 # 链接阶段
-g++ main.o -o my_app libB.a libC.a # 4. 链接 B 和 C（现在需要 c.o/libC.a），这时候进行连接了就需要知道C类的函数的具体位置，这些内容就在c.o里面
+g++ main.o -o my_app libB.a libC.a # 4. 链接 B 和 C（现在需要 c.o/libC.a），这时候进行连接了就需要知道C类的函数的具体位置，这些内容就在c.o里面，生成的可执行文件
+只会抽取所需要的部分，不会抽取所有的部分
+
+链接器执行步骤：
+扫描 main.o → 发现需要 B::process() 和 C::doSomething()
+扫描 libB.a → 查找索引表，找到 B::process() 在 b.o 中
+提取 b.o ✅
+忽略 libB.a 中其他未被引用的 .o ❌
+扫描 libC.a → 查找索引表，找到 C::doSomething() 在 c.o 中
+提取 c.o ✅
+忽略 libC.a 中其他未被引用的 .o ❌
+链接：把 main.o + b.o + c.o 合并成可执行文件
+
 
 编译 b.cpp 时：
 ┌─────────────┐
