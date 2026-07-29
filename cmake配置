@@ -39,6 +39,11 @@ CMAKE_CURRENT_SOURCE_DIR	当前处理的 CMakeLists.txt 所在目录	/home/user/
 CMAKE_CURRENT_BINARY_DIR	当前 CMakeLists.txt 对应的构建目录	/home/user/my_project/build/src
 
 
+target_link_libraries(... /home/.../libA.so)	✅ 能找到绝对路径	链接器接收的是文件路径，直接写入二进制
+target_link_libraries(... -L/home -lA)	❌ 找不到（显示 not found）	链接器只记库名，不记路径
+target_link_libraries(... yaml-cpp::yaml-cpp) + 设置 RPATH	✅ 能找到 RPATH 路径	显示为 RPATH 指定的路径
+find_package + 默认情况	❌ 找不到	依赖系统默认路径，通常 /usr/lib 有才找到
+
 
 
 
