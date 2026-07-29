@@ -1,3 +1,11 @@
+cmake编译流程：
+mkdir build
+cd build
+cmake ..
+make 
+会创建一个和源代码类似的文件结构，target会生成在默认的路径下面（在没有设置默认输出路径时）
+
+
 添加变量 -DCMAKE_BUILD_TYPE=.......
 CMAKE_SOURCE_DIR 为最外层cmakelists.txt文件路径，CMAKE_CURRENT_SOURCE_DIR为当前CmakeList.txt的路径
 CMKAE_BINARY_DIR为执行cmake ..的路径
@@ -40,9 +48,36 @@ CMAKE_CURRENT_BINARY_DIR	当前 CMakeLists.txt 对应的构建目录	/home/user/
 
 
 target_link_libraries(... /home/.../libA.so)	✅ 能找到绝对路径	链接器接收的是文件路径，直接写入二进制
-target_link_libraries(... -L/home -lA)	❌ 找不到（显示 not found）	链接器只记库名，不记路径
+target_link_libraries(... -L/home -lA)	❌ 找不到（显示 not found）	链接器只记库名，不记路径（）
 target_link_libraries(... yaml-cpp::yaml-cpp) + 设置 RPATH	✅ 能找到 RPATH 路径	显示为 RPATH 指定的路径
 find_package + 默认情况	❌ 找不到	依赖系统默认路径，通常 /usr/lib 有才找到
+
+搞明白：
+1.无论是静态库，动态库，还是可执行文件，都是一个target，都可以使用target_link_libraries.....，target_include_directories......。库也可以link库，
+但是不会把库的部分内容写进另一个库，只是做校验，是不是使用了另一个库的内容（如函数），只有在创建可执行文件的时候才会把静态库的内容加载进可执行文件，
+也就是如果只是使用了静态库，那么可执行文件可以直接运行，原因是直接包含了所需的静态库的内容，而动态库在链接的时候，只是做校验并把库名写进可执行文件而已（这是cmake编译链接阶段），
+运行时需要去找库才行（运行阶段），所以可能出现能够编译链接出可执行文件，但运行时出现未定义（原因是找不到库）。可以通过RPATH的方式指定去哪里查找，也可以通过LD_LIBRARY_PATH或者/etc/ld.so.conf
+链接器ld默认查找顺序是RPATH，LD_LIBRARY_PATH，/etc/ld.so.conf（这个文件可以包含很多默认查找路径）。ldd可以查看一个可执行文件的所需要的所有动态库有没有找到，ld是链接器，ldconfig命令默认会从以下路径扫描动态库（恢复软链接）
+RPATH设置方式：set_target_properties(test1 PROPERTIES 
+                            BUILD_RPATH "${CMAKE_BINARY_DIR}/src"
+                            INSTALL_RPATH "${CMAKE_BINARY_DIR}/src")  
+
+find_package()使用方式：
+find_package(<库名> REQUIRED)
+target_link_libraries(<你的目标> PRIVATE <库名>::<库名>)
+列如：cmake_minimum_required(VERSION 3.10)
+project(MyProject)
+
+find_package(yaml-cpp REQUIRED)
+
+add_executable(my_app main.cpp)
+target_link_libraries(my_app PRIVATE yaml-cpp::yaml-cpp)其中yaml-cpp::yaml-cpp：这是库提供的“导入目标”（Imported Target），包含了库路径、头文件路径、编译宏等所有信息。
+if(yaml-cpp_FOUND)
+    message(STATUS "yaml-cpp found!")
+else()
+    message(FATAL_ERROR "yaml-cpp not found!")
+endif()
+
 
 
 
