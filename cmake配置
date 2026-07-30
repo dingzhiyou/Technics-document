@@ -79,6 +79,10 @@ else()
 endif()
 
 
+add_library()原则上来说，需要添加cpp文件和h文件（现在更推荐使用target_source方式，这样可以更好控制权限），虽然h文件不会进行编译，但会用于进行语法检查，找不到也会报错，可以使用target_include_directory来添加，默认会在源文件所在目录，系统默认头文件路径来查找
+虽然一般情况下也是在当前CMakeLists.txt下专门处理当前目录的源文件
+
+
 
 
 
